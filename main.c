@@ -160,19 +160,19 @@ int insertAddress(node **root)
     }
     // check if ip address octets are valid
     if (IP[0] < 0 || IP[0] > 255) {
-        printf("octet must be in range [0-255]\n");
+        printf("error: %s is an illegal address – please reenter:", ip);
         return -1;
     }
     if (IP[1] < 0 || IP[1] > 255) {
-        printf("octet must be in range [0-255]\n");
+        printf("error: %s is an illegal address – please reenter:", ip);
         return -1;
     }
     if (IP[2] < 0 || IP[2] > 255) {
-        printf("octet must be in range [0-255]\n");
+        printf("error: %s is an illegal address – please reenter:", ip);
         return -1;
     }
     if (IP[3] < 0 || IP[3] > 255) {
-        printf("octet must be in range [0-255]\n");
+        printf("error: %s is an illegal address – please reenter:", ip);
         return -1;
     }
     // testing good
