@@ -482,7 +482,7 @@ int main() {
     struct address_t *root;
     root = NULL;
     int choice;
-    read_file(&root, "CS531_Inet.txt");
+    read_file(&root, "/home/hilla/Desktop/C_PLAIN/linked_dsa_NO2/CS531_Inet.txt");
     while (1) {
         printf("\n=============================================\n");
         printf("1)Add address\n");
