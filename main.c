@@ -132,6 +132,16 @@ int insertAddress(node **root)
 //    struct address_t *add = NULL;
     bool flag = 0;
 
+    printf("Enter alias >> ");
+    scanf("%s", alias);
+    flag = 0;
+    check_alias(root, alias, &flag);
+    if (flag == 1) {
+        // as alias does exist, return the function
+        printf("%s already exists\n", alias);
+        return -1;
+    }
+
     // take user input for ip address
     printf("Enter address for %s: ", alias);
     scanf("%s", ip);
@@ -153,25 +163,16 @@ int insertAddress(node **root)
         printf("octet must be in range [0-255]\n");
         return -1;
     }
-    if (IP[0] < 0 || IP[0] > 255) {
+    if (IP[1] < 0 || IP[1] > 255) {
         printf("octet must be in range [0-255]\n");
         return -1;
     }
-    if (IP[0] < 0 || IP[0] > 255) {
+    if (IP[2] < 0 || IP[2] > 255) {
         printf("octet must be in range [0-255]\n");
         return -1;
     }
-    if (IP[0] < 0 || IP[0] > 255) {
+    if (IP[3] < 0 || IP[3] > 255) {
         printf("octet must be in range [0-255]\n");
-        return -1;
-    }
-    printf("Enter alias >> ");
-    scanf("%s", alias);
-    flag = 0;
-    check_alias(root, alias, &flag);
-    if (flag == 1) {
-        // as alias does exist, return the function
-        printf("%s already exists\n", alias);
         return -1;
     }
     // testing good
