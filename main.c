@@ -224,7 +224,7 @@ int update_adress(node **head)
          i++) {
         // loop untill four valid inputs are recieved
         while (1) {
-            printf("enter locataion # %d\n", i + 1);
+            printf("Enter location # %d\n", i + 1);
             scanf("%d", &IP[i]);
 
             // if valid input is received stop loop
@@ -233,7 +233,7 @@ int update_adress(node **head)
             }
                 // if not valid input
             else {
-                printf("illegal entry\n");
+                printf("error: %d is an illegal entry - please reenter\n", IP[i]);
             }
         }
     }
@@ -286,7 +286,7 @@ void find_by_loc(node **head)
             if (loc[i] >= 0 && loc[i] <= 255) {
                 break;
             } else {
-                printf("illegal entry\n");
+                printf("error: %d is an illegal entry - please reenter\n", loc[i]);
             }
         }
     }
