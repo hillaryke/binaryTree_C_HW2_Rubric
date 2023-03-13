@@ -1,12 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <ctype.h>
 
 typedef int bool;
-#define FALSE 0 \
-#define TRUE 1  \
 
 // structure for storing ip addresses
 struct address_t {
@@ -18,7 +15,7 @@ struct address_t {
 typedef struct address_t node;
 
 // prototypes of the functions
-bool greater_alias(char *s1, char *s2);
+bool greater_alias(char *s1, const char *s2);
 
 int alias_cmp(char *s1, char *s2, int l1, int l2);
 
@@ -28,26 +25,26 @@ node *find_by_alias(node **head, char *alias);
 
 bool check_alias(node **head, char *alias, int *flag);
 
-bool checkIP(node **head, int ip[], int *flag);
+bool checkIP(node **head, int loc[], int *flag);
 
-int update_adress(node **head);
+int update_address(node **head);
 
 void update(node **head, int ip[], char *alias);
 
 void find_by_loc(node **head);
 
-void findusingloc(node **head, int loc[], int *flag);
+void find_using_loc(node **head, int loc[], int *flag);
 
 void inOrder(node *tree, int *count);
 
-void print(struct address_t *root);
+//void print(struct address_t *root);
 
 void write_data(node *tree, char filename[]);
 
-//fucntion to check which alias is greater and is used in building the bst
-bool greater_alias(char *s1, char *s2) {
+//function to check which alias is greater and is used in building the bst
+bool greater_alias(char *s1, const char *s2) {
     int l1 = strlen(s1);
-    int l2 = strlen(s2);
+//    int l2 = strlen(s2);
     for (int i = 0;
          i < l1;
          i++) {
@@ -62,9 +59,7 @@ int alias_cmp(char *s1, char *s2, int l1, int l2) {
     if (l1 != l2) {
         return 0;
     }
-    for (int i = 0;
-         i < l1;
-         i++) {
+    for (int i = 0; i < l1; i++) {
         char a = toupper(s1[i]);
         char b = toupper(s2[i]);
         if (a != b) {
@@ -134,7 +129,7 @@ int insertAddress(node **root)
     char ip[25];
     char dot;
     int IP[4];
-    struct address_t *add = NULL;
+//    struct address_t *add = NULL;
     bool flag = 0;
 
     // take user input for ip address
@@ -143,7 +138,7 @@ int insertAddress(node **root)
 
     // converts the string to int
     sscanf(ip, "%d%c%d%c%d%c%d", &IP[0], &dot, &IP[1], &dot, &IP[2], &dot, &IP[3]);
-    struct address_t *t;
+//    struct address_t *t;
 
     // check if ip address  already exist
     flag = 0;
@@ -153,7 +148,7 @@ int insertAddress(node **root)
         printf("ip Address already exists\n");
         return -1;
     }
-    // check if ip address octets are vaild
+    // check if ip address octets are valid
     if (IP[0] < 0 || IP[0] > 255) {
         printf("octet must be in range [0-255]\n");
         return -1;
@@ -175,7 +170,7 @@ int insertAddress(node **root)
     flag = 0;
     check_alias(root, alias, &flag);
     if (flag == 1) {
-        // as alias does  exist . return the function
+        // as alias does exist, return the function
         printf("%s already exists\n", alias);
         return -1;
     }
@@ -203,14 +198,14 @@ node *find_by_alias(node **head, char *alias)
     return NULL;
 }
 
-int update_adress(node **head)
+int update_address(node **head)
 //update the node address after finding it using alias
 {
     char alias[11];
     printf("Enter alias >> ");
     scanf("%s", alias);
-    char ip[25];
-    char dot;
+//    char ip[25];
+//    char dot;
     int IP[4];
     bool flag = 0;
     check_alias(&(*(head)), alias, &flag);
@@ -222,7 +217,7 @@ int update_adress(node **head)
     for (int i = 0;
          i < 4;
          i++) {
-        // loop untill four valid inputs are recieved
+        // loop until four valid inputs are received
         while (1) {
             printf("Enter location # %d\n", i + 1);
             scanf("%d", &IP[i]);
@@ -271,17 +266,17 @@ void update(node **head, int ip[], char *alias)
 void find_by_loc(node **head)
 //find the alias and IP using location
 {
-    int a;
-    int b;
+//    int a;
+//    int b;
     int loc[2];
 
     // getting the loc octets
     for (int i = 0;
          i < 2;
          i++) {
-        // loop untill valid inputs are reviewed
+        // loop until valid inputs are reviewed
         while (1) {
-            printf("enter locataion # %d\n", i + 1);
+            printf("Enter location # %d\n", i + 1);
             scanf("%d", &loc[i]);
             if (loc[i] >= 0 && loc[i] <= 255) {
                 break;
@@ -291,26 +286,26 @@ void find_by_loc(node **head)
         }
     }
     int flag = 0;
-    findusingloc(head, loc, &flag);
+    find_using_loc(head, loc, &flag);
     if (!flag) printf("no matching location  exists\n");
 }
 
-void findusingloc(node **head, int loc[],
+void find_using_loc(node **head, int loc[],
                   int *flag)
 //helper function for find_by_loc
 {
     if (*head) {
-        findusingloc(&((*head)->leftChild), loc, flag);
+        find_using_loc(&((*head)->leftChild), loc, flag);
         if ((*head)->octet[0] == loc[0] && (*head)->octet[1] == loc[1]) {
             *flag = 1;
 
-// testingfor
+// testing for
             printf("%s %d.%d.%d.%d\n", (*head)->alias, (*head)->octet[0], (*head)->octet[1], (*head)->octet[2],
                    (*head)->octet[3]);
 
             printf("%s\n", (*head)->alias);
         }
-        findusingloc((&(*head)->rightChild), loc, flag);
+        find_using_loc((&(*head)->rightChild), loc, flag);
     }
 }
 
@@ -362,14 +357,13 @@ struct address_t *Delete(struct address_t *head, char *alias, int con) {
             int c = head->octet[2];
             int d = head->octet[3];
 
-            // priting confirmation
+            // displaying confirmation
             printf("delete %s %d.%d.%d.%d ?(y/n)\n", alias, a, b, c, d);
             scanf(" %c", &conf);
 
             // if user select no.. we cannot delete
             if (conf == 'n') {
                 // printf("not deleted\n");
-
                 return head;
             }
         }
@@ -385,7 +379,7 @@ struct address_t *Delete(struct address_t *head, char *alias, int con) {
             free(head);
             return temp;
         }
-        // if node has two children then get the inorder susccessor
+        // if node has two children then get the inorder successor
         // minimum in the right subtree
         struct address_t *temp = minValueNode(head->rightChild);
 
@@ -435,33 +429,31 @@ int read_file(node **tree, char *file_path) {
     return 0;
 }
 
-void save_list(node *head) {
-    char filename[100] = {"output.txt"};
-
-    // TWO LINES BELOW testing
-    printf("Enter file name >> ");
-
-    scanf("%s", filename);
-    FILE *fptr = fopen(filename, "w");
-
-    //if file cannot be opened
-    if (fptr == NULL) {
-        printf("cannot open output file\n");
-        return;
-    }
-    //if list is emtpy
-    if (head == NULL) {
-        printf("tree is empty\n");
-        return;
-    }
-    fclose(fptr);
-
-    // printing to file
-    write_data(head, filename);
-
-    /// closing the file
-    return;
-}
+// NEVER USED
+//void save_list(node *head) {
+//    char filename[100] = {"output.txt"};
+//
+//    // TWO LINES BELOW testing
+//    printf("Enter file name >> ");
+//
+//    scanf("%s", filename);
+//    FILE *fptr = fopen(filename, "w");
+//
+//    //if file cannot be opened
+//    if (fptr == NULL) {
+//        printf("cannot open output file\n");
+//        return;
+//    }
+//    //if list is emtpy
+//    if (head == NULL) {
+//        printf("tree is empty\n");
+//        return;
+//    }
+//    fclose(fptr);
+//
+//    // printing to file
+//    write_data(head, filename);
+//}
 
 void write_data(node *tree, char filename[]) {
     if (tree == NULL) return;
@@ -515,7 +507,7 @@ int main() {
                 break;
             }
             case 3: {
-                update_adress(&root);
+                update_address(&root);
                 break;
             }
             case 4: {
@@ -550,7 +542,6 @@ int main() {
             case 8: {
                 printf("Good bye!\n");
                 return 0;
-                break;
             }
             default: {
                 //if value is not in range
@@ -559,5 +550,4 @@ int main() {
             }
         }
     }
-    return 0;
 }
