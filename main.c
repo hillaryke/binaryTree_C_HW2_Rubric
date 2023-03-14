@@ -493,7 +493,7 @@ int main() {
             case 5: {
                 int count = 0;
                 inOrder(root, &count);
-                printf("total node count: %d\n", count);
+                printf("Total node count: %d\n", count);
                 break;
             }
             case 6: {
@@ -510,6 +510,8 @@ int main() {
 
                 //It will erase all data in file and create a new one if the file does not exist
                 write_data(root, filename);
+                fflush(stdin);
+                printf("File saved.\n");
                 break;
             }
             case 8: {
