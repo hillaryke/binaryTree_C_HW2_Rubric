@@ -5,7 +5,7 @@
 
 typedef int bool;
 
-// structure for storing ip addresses
+// structure for storing iP addresses
 struct address_t {
     int octet[4];
     char alias[11];
@@ -15,34 +15,34 @@ struct address_t {
 typedef struct address_t node;
 
 // prototypes of the functions
-bool greater_alias(char *s1, const char *s2);
+bool greaterAlias(char *s1, const char *s2);
 
-int alias_cmp(char *s1, char *s2, int l1, int l2);
+int aliasCmp(char *s1, char *s2, int l1, int l2);
 
 void insert(node **tree, int val[], char alias[]);
 
-node *find_by_alias(node **head, char *alias);
+node *findByAlias(node **head, char *alias);
 
-bool check_alias(node **head, char *alias, int *flag);
+bool checkAlias(node **head, char *alias, int *flag);
 
-bool checkIP(node **head, int loc[], int *flag);
+bool check_iP(node **head, int loc[], int *flag);
 
-int update_address(node **head);
+int updateAddress(node **head);
 
-void update(node **head, int ip[], char *alias);
+void update(node **head, int iP[], char *alias);
 
-void find_by_loc(node **head);
+void findByLoc(node **head);
 
-void find_using_loc(node **head, int loc[], int *flag);
+void findUsingLoc(node **head, int loc[], int *flag);
 
 void inOrder(node *tree, int *count);
 
 //void print(struct address_t *root);
 
-void write_data(node *tree, char filename[]);
+void writeData(node *tree, char filename[]);
 
 //function to check which alias is greater and is used in building the bst
-bool greater_alias(char *s1, const char *s2) {
+bool greaterAlias(char *s1, const char *s2) {
     int l1 = strlen(s1);
     int l2 = strlen(s2);
     for (int i = 0;
@@ -55,7 +55,7 @@ bool greater_alias(char *s1, const char *s2) {
 }
 
 //compare two aliases and tell if they are equal or not
-int alias_cmp(char *s1, char *s2, int l1, int l2) {
+int aliasCmp(char *s1, char *s2, int l1, int l2) {
     if (l1 != l2) {
         return 0;
     }
@@ -69,38 +69,38 @@ int alias_cmp(char *s1, char *s2, int l1, int l2) {
     return 1;
 }
 
-bool checkIP(node **head, int loc[], int *flag)
-//check if ip exists in bst and change the flag accordingly
+bool check_iP(node **head, int loc[], int *flag)
+//check if iP exists in bst and change the flag accordingly
 {
     if (*head) {
-        checkIP((&(*head)->leftChild), loc, &(*flag));
+        check_iP((&(*head)->leftChild), loc, &(*flag));
         if ((*head)->octet[0] == loc[0] && (*(head))->octet[1] == loc[1] && (*(head))->octet[2] == loc[2] &&
             (*(head))->octet[3] == loc[3]) {
             *flag = 1;
             return 1;
         }
-        checkIP((&(*head)->rightChild), loc, &(*flag));
+        check_iP((&(*head)->rightChild), loc, &(*flag));
     }
     return 0;
 }
 
-bool check_alias(node **head, char *alias, bool *flag)
+bool checkAlias(node **head, char *alias, bool *flag)
 //check if alias exists in bst and change the flag accordingly
 {
     if (*head) {
-        check_alias(&((*head)->leftChild), alias, &(*flag));
+        checkAlias(&((*head)->leftChild), alias, &(*flag));
         int l1 = strlen((*(head))->alias);
         int l2 = strlen(alias);
-        if (alias_cmp((*(head))->alias, alias, l1, l2) == 1) {
+        if (aliasCmp((*(head))->alias, alias, l1, l2) == 1) {
             *flag = 1;
             return 1;
         }
-        check_alias(&((*head)->rightChild), alias, &(*flag));
+        checkAlias(&((*head)->rightChild), alias, &(*flag));
     }
     return 0;
 }
 
-void insert(node **tree, int val[], char alias[])
+void insert(node **tree, int value[], char alias[])
 //insert node in bst
 {
     node *temp = NULL;
@@ -110,15 +110,15 @@ void insert(node **tree, int val[], char alias[])
         for (int i = 0;
              i < 4;
              i++)
-            temp->octet[i] = val[i];
+            temp->octet[i] = value[i];
         strcpy(temp->alias, alias);
         *tree = temp;
         return;
     }
-    if (greater_alias((*tree)->alias, alias)) {
-        insert(&(*tree)->leftChild, val, alias);
+    if (greaterAlias((*tree)->alias, alias)) {
+        insert(&(*tree)->leftChild, value, alias);
     } else {
-        insert(&(*tree)->rightChild, val, alias);
+        insert(&(*tree)->rightChild, value, alias);
     }
 }
 
@@ -126,7 +126,7 @@ int insertAddress(node **root)
 //helper function for insert
 {
     char alias[11];
-    char ip[25];
+    char iP[25];
     char dot;
     int IP[4];
 //    struct address_t *add = NULL;
@@ -135,7 +135,7 @@ int insertAddress(node **root)
     printf("Enter alias >> ");
     scanf("%s", alias);
     flag = 0;
-    check_alias(root, alias, &flag);
+    checkAlias(root, alias, &flag);
     if (flag == 1) {
         // as alias does exist, return the function
         printf("error: %s already exists\n", alias);
@@ -143,37 +143,37 @@ int insertAddress(node **root)
     }
 
     while (1) {
-        // take user input for ip address
+        // take user input for iP address
         printf("Enter address for %s: ", alias);
-        scanf("%s", ip);
+        scanf("%s", iP);
 
         // converts the string to int
-        sscanf(ip, "%d%c%d%c%d%c%d", &IP[0], &dot, &IP[1], &dot, &IP[2], &dot, &IP[3]);
+        sscanf(iP, "%d%c%d%c%d%c%d", &IP[0], &dot, &IP[1], &dot, &IP[2], &dot, &IP[3]);
 //    struct address_t *t;
 
-        // check if ip address  already exist
+        // check if iP address  already exist
         flag = 0;
-        checkIP(&(*(root)), IP, &flag);
+        check_iP(&(*(root)), IP, &flag);
         if (flag == 1) {
-            // if ip address is already present we cannot use it again
+            // if iP address is already present we cannot use it again
             printf("error: ip Address already exists\n");
             continue;
         }
-        // check if ip address octets are valid
+        // check if iP address octets are valid
         if (IP[0] < 0 || IP[0] > 255) {
-            printf("error: %s is an illegal address – please reenter: \n", ip);
+            printf("error: %s is an illegal address – please reenter: \n", iP);
             continue;
         }
         if (IP[1] < 0 || IP[1] > 255) {
-            printf("error: %s is an illegal address – please reenter: \n", ip);
+            printf("error: %s is an illegal address – please reenter: \n", iP);
             continue;
         }
         if (IP[2] < 0 || IP[2] > 255) {
-            printf("error: %s is an illegal address – please reenter: \n", ip);
+            printf("error: %s is an illegal address – please reenter: \n", iP);
             continue;
         }
         if (IP[3] < 0 || IP[3] > 255) {
-            printf("error: %s is an illegal address – please reenter: \n", ip);
+            printf("error: %s is an illegal address – please reenter: \n", iP);
             continue;
         }
         break;
@@ -185,24 +185,24 @@ int insertAddress(node **root)
     return 0;
 }
 
-node *find_by_alias(node **head, char *alias)
+node *findByAlias(node **head, char *alias)
 //find node by alias and print data of that node
 {
     if (*head) {
-        find_by_alias((&(*head)->leftChild), alias);
+        findByAlias((&(*head)->leftChild), alias);
         int l1 = strlen((*(head))->alias);
         int l2 = strlen(alias);
-        if (alias_cmp((*(head))->alias, alias, l1, l2) == 1) {
+        if (aliasCmp((*(head))->alias, alias, l1, l2) == 1) {
             printf("%s %d.%d.%d.%d\n", (*head)->alias, (*head)->octet[0], (*head)->octet[1], (*head)->octet[2],
                    (*head)->octet[3]);
             return ((*head));
         }
-        find_by_alias((&(*head)->rightChild), alias);
+        findByAlias((&(*head)->rightChild), alias);
     }
     return NULL;
 }
 
-int update_address(node **head)
+int updateAddress(node **head)
 //update the node address after finding it using alias
 {
     char alias[11];
@@ -212,7 +212,7 @@ int update_address(node **head)
     char dot;
     int IP[4];
     bool flag = 0;
-    check_alias(&(*(head)), alias, &flag);
+    checkAlias(&(*(head)), alias, &flag);
     if (flag != 1) {
         // as alias does  exist . return the function
         printf("%s does not exists\n", alias);
@@ -238,7 +238,7 @@ int update_address(node **head)
     }
     // check if ip address  already exist
     flag = 0;
-    checkIP(&(*(head)), IP, &flag);
+    check_iP(&(*(head)), IP, &flag);
     if (flag == 1) {
         // if ip address is already present we cannot use it again
         printf("ip Address already exists\n");
@@ -256,7 +256,7 @@ void update(node **head, int ip[], char *alias)
         update((&(*head)->leftChild), ip, alias);
         int l1 = strlen((*(head))->alias);
         int l2 = strlen(alias);
-        if (alias_cmp((*(head))->alias, alias, l1, l2) == 1) {
+        if (aliasCmp((*(head))->alias, alias, l1, l2) == 1) {
             //updating values
             for (int i = 0;
                  i < 4;
@@ -267,7 +267,7 @@ void update(node **head, int ip[], char *alias)
     }
 }
 
-void find_by_loc(node **head)
+void findByLoc(node **head)
 //find the alias and IP using location
 {
     int a;
@@ -290,16 +290,16 @@ void find_by_loc(node **head)
         }
     }
     int flag = 0;
-    find_using_loc(head, loc, &flag);
+    findUsingLoc(head, loc, &flag);
     if (!flag) printf("no matching location  exists\n");
 }
 
-void find_using_loc(node **head, int loc[],
+void findUsingLoc(node **head, int loc[],
                   int *flag)
-//helper function for find_by_loc
+//helper function for findByLoc
 {
     if (*head) {
-        find_using_loc(&((*head)->leftChild), loc, flag);
+        findUsingLoc(&((*head)->leftChild), loc, flag);
         if ((*head)->octet[0] == loc[0] && (*head)->octet[1] == loc[1]) {
             *flag = 1;
 
@@ -309,7 +309,7 @@ void find_using_loc(node **head, int loc[],
 
             printf("%s\n", (*head)->alias);
         }
-        find_using_loc((&(*head)->rightChild), loc, flag);
+        findUsingLoc((&(*head)->rightChild), loc, flag);
     }
 }
 
@@ -340,13 +340,13 @@ struct address_t *Delete(struct address_t *head, char *alias, int con) {
         return head;
     }
     // If the aliases to be deleted is smaller than the head alias, then it lies in left subtree
-    if (greater_alias(head->alias, alias) == 1)
+    if (greaterAlias(head->alias, alias) == 1)
         //find greater alias/key
     {
         head->leftChild = Delete(head->leftChild, alias, 1);
     }
         // If the alias to be deleted is greater than the head's alias, then it lies in right subtree
-    else if (greater_alias(alias, head->alias) == 1) {
+    else if (greaterAlias(alias, head->alias) == 1) {
         head->rightChild = Delete(head->rightChild, alias, 1);
     } else {
         if (con) {
@@ -428,9 +428,9 @@ int read_file(node **tree, char *file_path) {
     return 0;
 }
 
-void write_data(node *tree, char filename[]) {
+void writeData(node *tree, char filename[]) {
     if (tree == NULL) return;
-    write_data(tree->leftChild, filename);
+    writeData(tree->leftChild, filename);
 
     //Appending the each node one at a time in file
     FILE *fptr;
@@ -439,7 +439,7 @@ void write_data(node *tree, char filename[]) {
     fptr = fopen(filename, "a");
     fprintf(fptr, "%s %d.%d.%d.%d \n", tree->alias, tree->octet[0], tree->octet[1], tree->octet[2], tree->octet[3]);
     fclose(fptr);
-    write_data(((tree))->rightChild, filename);
+    writeData(((tree))->rightChild, filename);
 }
 
 
@@ -474,13 +474,13 @@ int main() {
                 printf("Enter alias >> ");
                 scanf("%s", alias);
                 bool flag = 0;
-                check_alias(&root, alias, &flag);
-                if (flag == 1) find_by_alias(&root, alias);
+                checkAlias(&root, alias, &flag);
+                if (flag == 1) findByAlias(&root, alias);
                 else printf("%s does not exists\n", alias);
                 break;
             }
             case 3: {
-                update_address(&root);
+                updateAddress(&root);
                 break;
             }
             case 4: {
@@ -493,11 +493,11 @@ int main() {
             case 5: {
                 int count = 0;
                 inOrder(root, &count);
-                printf("Total node count: %d\n", count);
+                printf("total node count: %d\n", count);
                 break;
             }
             case 6: {
-                find_by_loc(&root);
+                findByLoc(&root);
                 break;
             }
             case 7: {
@@ -509,9 +509,7 @@ int main() {
                 fclose(fopen(filename, "w"));
 
                 //It will erase all data in file and create a new one if the file does not exist
-                write_data(root, filename);
-                fflush(stdin);
-                printf("File saved.\n");
+                writeData(root, filename);
                 break;
             }
             case 8: {
