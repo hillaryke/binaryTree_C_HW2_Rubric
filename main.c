@@ -44,7 +44,7 @@ void write_data(node *tree, char filename[]);
 //function to check which alias is greater and is used in building the bst
 bool greater_alias(char *s1, const char *s2) {
     int l1 = strlen(s1);
-//    int l2 = strlen(s2);
+    int l2 = strlen(s2);
     for (int i = 0;
          i < l1;
          i++) {
@@ -138,42 +138,45 @@ int insertAddress(node **root)
     check_alias(root, alias, &flag);
     if (flag == 1) {
         // as alias does exist, return the function
-        printf("%s already exists\n", alias);
+        printf("error: %s already exists\n", alias);
         return -1;
     }
 
-    // take user input for ip address
-    printf("Enter address for %s: ", alias);
-    scanf("%s", ip);
+    while (1) {
+        // take user input for ip address
+        printf("Enter address for %s: ", alias);
+        scanf("%s", ip);
 
-    // converts the string to int
-    sscanf(ip, "%d%c%d%c%d%c%d", &IP[0], &dot, &IP[1], &dot, &IP[2], &dot, &IP[3]);
+        // converts the string to int
+        sscanf(ip, "%d%c%d%c%d%c%d", &IP[0], &dot, &IP[1], &dot, &IP[2], &dot, &IP[3]);
 //    struct address_t *t;
 
-    // check if ip address  already exist
-    flag = 0;
-    checkIP(&(*(root)), IP, &flag);
-    if (flag == 1) {
-        // if ip address is already present we cannot use it again
-        printf("ip Address already exists\n");
-        return -1;
-    }
-    // check if ip address octets are valid
-    if (IP[0] < 0 || IP[0] > 255) {
-        printf("error: %s is an illegal address – please reenter:", ip);
-        return -1;
-    }
-    if (IP[1] < 0 || IP[1] > 255) {
-        printf("error: %s is an illegal address – please reenter:", ip);
-        return -1;
-    }
-    if (IP[2] < 0 || IP[2] > 255) {
-        printf("error: %s is an illegal address – please reenter:", ip);
-        return -1;
-    }
-    if (IP[3] < 0 || IP[3] > 255) {
-        printf("error: %s is an illegal address – please reenter:", ip);
-        return -1;
+        // check if ip address  already exist
+        flag = 0;
+        checkIP(&(*(root)), IP, &flag);
+        if (flag == 1) {
+            // if ip address is already present we cannot use it again
+            printf("error: ip Address already exists\n");
+            continue;
+        }
+        // check if ip address octets are valid
+        if (IP[0] < 0 || IP[0] > 255) {
+            printf("error: %s is an illegal address – please reenter: \n", ip);
+            continue;
+        }
+        if (IP[1] < 0 || IP[1] > 255) {
+            printf("error: %s is an illegal address – please reenter: \n", ip);
+            continue;
+        }
+        if (IP[2] < 0 || IP[2] > 255) {
+            printf("error: %s is an illegal address – please reenter: \n", ip);
+            continue;
+        }
+        if (IP[3] < 0 || IP[3] > 255) {
+            printf("error: %s is an illegal address – please reenter: \n", ip);
+            continue;
+        }
+        break;
     }
     // testing good
     printf("%d.%d.%d.%d %s\n", IP[0], IP[1], IP[2], IP[3], alias);
@@ -205,8 +208,8 @@ int update_address(node **head)
     char alias[11];
     printf("Enter alias >> ");
     scanf("%s", alias);
-//    char ip[25];
-//    char dot;
+    char ip[25];
+    char dot;
     int IP[4];
     bool flag = 0;
     check_alias(&(*(head)), alias, &flag);
@@ -267,8 +270,8 @@ void update(node **head, int ip[], char *alias)
 void find_by_loc(node **head)
 //find the alias and IP using location
 {
-//    int a;
-//    int b;
+    int a;
+    int b;
     int loc[2];
 
     // getting the loc octets
@@ -320,11 +323,6 @@ void inOrder(node *tree, int *count)
     inOrder(tree->rightChild, count);
 }
 
-//void print(struct address_t *root)
-////wrapper function for inorder
-//{
-//    int *co;
-//     inOrder(root,); }
 // Helper function to find minimum value node in the subtree rooted at `curr`
 struct address_t *minValueNode(struct address_t *node) {
     struct address_t *current = node;
@@ -430,32 +428,6 @@ int read_file(node **tree, char *file_path) {
     return 0;
 }
 
-// NEVER USED
-//void save_list(node *head) {
-//    char filename[100] = {"output.txt"};
-//
-//    // TWO LINES BELOW testing
-//    printf("Enter file name >> ");
-//
-//    scanf("%s", filename);
-//    FILE *fptr = fopen(filename, "w");
-//
-//    //if file cannot be opened
-//    if (fptr == NULL) {
-//        printf("cannot open output file\n");
-//        return;
-//    }
-//    //if list is emtpy
-//    if (head == NULL) {
-//        printf("tree is empty\n");
-//        return;
-//    }
-//    fclose(fptr);
-//
-//    // printing to file
-//    write_data(head, filename);
-//}
-
 void write_data(node *tree, char filename[]) {
     if (tree == NULL) return;
     write_data(tree->leftChild, filename);
@@ -477,7 +449,7 @@ int main() {
     int choice;
     read_file(&root, "/home/hilla/Desktop/C_PLAIN/linked_dsa_NO2/CS531_Inet.txt");
     while (1) {
-        printf("\n=============================================\n");
+        printf("\n");
         printf("1)Add address\n");
         printf("2)Look up address\n");
         printf("3)Update address\n");
@@ -486,7 +458,7 @@ int main() {
         printf("6)Display aliases for location\n");
         printf("7)Save to file\n");
         printf("8)Quit\n");
-        printf("\n=============================================\n");
+        printf("\n");
         printf("Enter Option >> ");
         scanf("%d", &choice);
 
